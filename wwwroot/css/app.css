@@ -82,3 +82,19 @@
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Loading");
 }
+
+input::-ms-reveal,
+input::-ms-clear {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+}
+
+/* Hide WebKit / Chrome auto-fill eye & clear buttons */
+input::-webkit-contacts-auto-fill-button,
+input::-webkit-credentials-auto-fill-button {
+    visibility: hidden !important;
+    pointer-events: none !important;
+    position: absolute !important;
+    right: 0 !important;
+}

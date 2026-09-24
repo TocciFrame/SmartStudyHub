@@ -1,153 +1,177 @@
 @page "/dashboard"
+@using SmartStudyHub.Services
+@inject AuthService AuthService
+@inject NavigationManager Navigation
 
-<div class="min-h-screen bg-slate-100/60 p-6 font-sans text-slate-800 flex flex-col justify-between">
-    <div>
-        <!-- Top Workspace Header -->
-        <header class="max-w-5xl mx-auto flex items-center justify-between mb-8">
-            <div class="flex items-center gap-3">
-                <div class="bg-blue-600 text-white p-2 rounded-xl shadow-sm">
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M4 4h4v4H4V4zm6 0h4v4h-4V4zm6 0h4v4h-4V4zM4 10h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4zM4 16h4v4H4v-4zm6 0h4v4h-4v-4zm6 0h4v4h-4v-4z"/>
-                    </svg>
-                </div>
-                <div>
-                    <h1 class="text-base font-bold text-slate-900 leading-tight">Smart Study Hub</h1>
-                    <p class="text-[11px] text-slate-400">Good afternoon — ready to focus?</p>
-                </div>
+<div class="min-h-screen flex flex-col bg-[#f8f9fc] font-sans antialiased text-gray-800">
+    <!-- Top Navigation Bar -->
+    <header class="w-full bg-white border-b border-gray-100 py-3.5 px-8 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+            <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
+                    <rect x="3" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="3" width="7" height="7" rx="1.5" />
+                    <rect x="14" y="14" width="7" height="7" rx="1.5" />
+                    <rect x="3" y="14" width="7" height="7" rx="1.5" />
+                </svg>
             </div>
-            <a href="/" class="text-xs text-slate-400 hover:text-slate-600 flex items-center gap-1 font-medium">
-                ‹ Sign out
-            </a>
-        </header>
+            <span class="font-bold text-gray-900 text-sm tracking-tight">Smart Study Hub</span>
+        </div>
+        <div class="flex items-center gap-2 text-xs text-gray-500">
+            <button @onclick="HandleSignOut" class="hover:text-gray-800 flex items-center gap-1">
+                <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                Sign out
+            </button>
+        </div>
+    </header>
 
-        <!-- 2x2 Workspace Grid -->
-        <main class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-5">
-
-            <!-- Card 1: Document Summarizer -->
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[300px]">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2 font-bold text-slate-800 text-xs">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                            </svg>
-                            <span>Document Summarizer</span>
-                        </div>
-                        <span class="bg-blue-50 text-blue-600 text-[10px] font-semibold px-1.5 py-0.5 rounded">AI</span>
-                    </div>
-
-                    <!-- Drop Zone -->
-                    <div class="border border-dashed border-blue-200 rounded-xl p-5 text-center bg-blue-50/20 hover:bg-blue-50/40 cursor-pointer mb-3 transition-colors">
-                        <div class="inline-flex items-center justify-center w-8 h-8 bg-blue-50 text-blue-500 rounded-lg mb-1">
-                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-                            </svg>
-                        </div>
-                        <p class="font-bold text-slate-700 text-xs">Drop your file here</p>
-                        <p class="text-[10px] text-slate-400 mt-0.5">PDF, DOCX, TXT — up to 20 MB</p>
-                    </div>
-
-                    <!-- Summary Box -->
-                    <div class="bg-slate-50/80 p-3 rounded-xl text-[11px] text-slate-400 space-y-1.5 leading-relaxed border border-slate-100">
-                        <div class="flex items-center gap-1 font-semibold text-emerald-600 text-[9px] uppercase tracking-wider">
-                            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> SUMMARY
-                        </div>
-                        <p class="text-slate-400">This document covers three core principles of spaced repetition: (1) optimal review intervals increase retention by 40–60%, (2) active recall outperforms passive re-reading, and (3) interleaving subjects reduces cognitive fatigue. Key takeaway: study in focused 25-min blocks with deliberate rest.</p>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Card 2: Flashcards -->
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[300px]">
-                <div>
-                    <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-2 font-bold text-slate-800 text-xs">
-                            <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-                            </svg>
-                            <span>Flashcards</span>
-                        </div>
-                        <span class="bg-blue-50 text-blue-600 text-[10px] font-semibold px-2 py-0.5 rounded-full">1 / 4</span>
-                    </div>
-
-                    <!-- Card Body -->
-                    <div class="bg-blue-50/60 rounded-xl p-6 flex flex-col items-center justify-center text-center my-3 border border-blue-100/50 min-h-[140px]">
-                        <span class="text-[9px] font-bold text-blue-400 tracking-wider uppercase mb-2">QUESTION</span>
-                        <p class="text-xs font-bold text-blue-900">What is the spacing effect?</p>
-                    </div>
-                </div>
-
-                <div class="flex items-center justify-between pt-1 text-xs">
-                    <button class="text-slate-500 hover:text-slate-800 font-medium text-[11px] flex items-center gap-1">‹ Prev</button>
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold px-4 py-1.5 rounded-lg shadow-2xs flex items-center gap-1.5">
-                        🔄 Flip Card
-                    </button>
-                    <button class="text-slate-500 hover:text-slate-800 font-medium text-[11px] flex items-center gap-1">Next ›</button>
-                </div>
-            </div>
-
-            <!-- Card 3: Focus Music -->
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[220px]">
-                <div>
-                    <div class="flex items-center gap-2 font-bold text-slate-800 text-xs mb-3">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12 0c0 1.105-1.343 2-3 2s-3-.895-3-2 3 .895 3 2zM9 10l12-3" />
-                        </svg>
-                        <span>Focus Music</span>
-                    </div>
-
-                    <select class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-1.5 text-xs text-slate-700 focus:outline-none mb-3">
-                        <option>☁️ Soft Rain</option>
-                        <option>🎧 Lo-Fi Beats</option>
-                        <option>🌊 White Noise</option>
-                    </select>
-
-                    <div class="bg-slate-50 rounded-xl p-3 text-center mb-3 flex items-center justify-center min-h-[50px] border border-slate-100">
-                        <div class="flex items-center gap-1 opacity-40">
-                            <span class="w-0.5 h-2 bg-blue-600 rounded-full"></span>
-                            <span class="w-0.5 h-4 bg-blue-600 rounded-full"></span>
-                            <span class="w-0.5 h-1 bg-blue-600 rounded-full"></span>
-                            <span class="w-0.5 h-3 bg-blue-600 rounded-full"></span>
-                            <span class="w-0.5 h-2 bg-blue-600 rounded-full"></span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="text-center">
-                    <button class="bg-blue-600 hover:bg-blue-700 text-white text-[11px] font-semibold px-5 py-1.5 rounded-lg inline-flex items-center gap-1.5 shadow-2xs">
-                        ▶ Play
-                    </button>
-                    <p class="text-[10px] text-slate-400 mt-1.5">Select a sound and hit play</p>
-                </div>
-            </div>
-
-            <!-- Card 4: Quick Scratchpad -->
-            <div class="bg-white rounded-2xl p-5 shadow-sm border border-slate-100 flex flex-col justify-between min-h-[220px]">
-                <div>
-                    <div class="flex items-center gap-2 font-bold text-slate-800 text-xs mb-3">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
-                        </svg>
-                        <span>Quick Scratchpad</span>
-                    </div>
-
-                    <textarea placeholder="Jot down ideas, formulas, or reminders..." 
-                              class="w-full bg-slate-50 border border-slate-100 rounded-xl p-3 text-xs text-slate-600 placeholder-slate-300 focus:outline-none h-28 resize-none leading-relaxed"></textarea>
-                </div>
-
-                <div class="flex items-center justify-between pt-2">
-                    <span class="text-[10px] text-slate-300">Not saved yet</span>
-                    <button class="bg-slate-100 hover:bg-slate-200 text-slate-500 text-[11px] font-semibold px-3 py-1.5 rounded-lg transition-colors">
-                        Save Notes
-                    </button>
-                </div>
-            </div>
-
-        </main>
+    <!-- Subtitle Greeting -->
+    <div class="max-w-5xl w-full mx-auto px-6 pt-6 pb-2">
+        <p class="text-xs text-gray-400">Good afternoon — ready to focus?</p>
     </div>
 
-    <!-- Footer -->
-    <footer class="text-center text-[10px] text-slate-400 pt-6">
-        Smart Study Hub · Built for focused learners
+    <!-- Dashboard Grid Cards -->
+    <main class="max-w-5xl w-full mx-auto px-6 grid grid-cols-1 md:grid-cols-2 gap-6 pb-12">
+        
+        <!-- Document Summarizer Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                        <h2 class="font-bold text-gray-900 text-xs">Document Summarizer</h2>
+                    </div>
+                    <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">AI</span>
+                </div>
+
+                <div class="border-2 border-dashed border-gray-100 rounded-xl p-6 text-center mb-4 bg-gray-50/30 hover:bg-gray-50/80 transition-colors cursor-pointer">
+                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-2 text-blue-600">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                    </div>
+                    <p class="text-xs font-semibold text-gray-700">Drop your file here</p>
+                    <p class="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, TXT — up to 20 MB</p>
+                </div>
+
+                <div class="bg-gray-50/50 rounded-xl p-3.5 border border-gray-100">
+                    <div class="flex items-center gap-1.5 mb-1.5">
+                        <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
+                        <span class="text-[10px] font-bold tracking-wider text-gray-500 uppercase">Summary</span>
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-gray-500">
+                        This document covers three core principles of spaced repetition: (1) optimal review intervals increase retention by 40-60%, (2) active recall outperforms passive re-reading, and (3) interleaving subjects reduces cognitive fatigue. Key takeaway: study in focused 25-min blocks with deliberate rest.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flashcards Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                        <h2 class="font-bold text-gray-900 text-xs">Flashcards</h2>
+                    </div>
+                    <span class="text-[10px] text-blue-600 font-medium bg-blue-50 px-2 py-0.5 rounded-full">1 / 4</span>
+                </div>
+
+                <div class="bg-gradient-to-b from-blue-50/40 to-blue-50/10 border border-blue-100/60 rounded-xl p-8 text-center flex flex-col items-center justify-center min-h-[160px] mb-6">
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-blue-400 mb-2">Question</span>
+                    <p class="font-semibold text-gray-800 text-sm">What is the spacing effect?</p>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <button class="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 font-medium">
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
+                    Prev
+                </button>
+                <button class="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-medium flex items-center gap-1.5 shadow-sm transition-colors">
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Flip Card
+                </button>
+                <button class="text-xs text-gray-400 hover:text-gray-600 flex items-center gap-1 font-medium">
+                    Next
+                    <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Focus Music Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-2" /></svg>
+                    <h2 class="font-bold text-gray-900 text-xs">Focus Music</h2>
+                </div>
+
+                <div class="relative mb-4">
+                    <select class="w-full bg-gray-50/50 border border-gray-100 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium appearance-none focus:outline-none cursor-pointer">
+                        <option>Soft Rain</option>
+                        <option>Lo-Fi Beats</option>
+                        <option>Forest Ambience</option>
+                    </select>
+                    <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
+                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                    </div>
+                </div>
+
+                <div class="bg-gray-50/50 rounded-xl py-6 flex items-center justify-center gap-1.5 mb-4 border border-gray-100">
+                    <div class="w-1 bg-gray-200 h-3 rounded-full"></div>
+                    <div class="w-1 bg-gray-200 h-5 rounded-full"></div>
+                    <div class="w-1 bg-gray-300 h-8 rounded-full"></div>
+                    <div class="w-1 bg-gray-200 h-4 rounded-full"></div>
+                    <div class="w-1 bg-gray-200 h-6 rounded-full"></div>
+                </div>
+            </div>
+
+            <div>
+                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-sm transition-colors mb-2">
+                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                    Play
+                </button>
+                <p class="text-[10px] text-gray-400 text-center">Select a sound and hit play</p>
+            </div>
+        </div>
+
+        <!-- Quick Scratchpad Card -->
+        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+            <div>
+                <div class="flex items-center gap-2 mb-4">
+                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                    <h2 class="font-bold text-gray-900 text-xs">Quick Scratchpad</h2>
+                </div>
+
+                <textarea class="w-full bg-gray-50/50 border border-gray-100 rounded-xl p-3.5 text-xs text-gray-700 placeholder-gray-300 focus:outline-none focus:bg-white resize-none h-32" placeholder="Jot down ideas, formulas, or reminders..."></textarea>
+            </div>
+
+            <div class="flex items-center justify-between mt-4">
+                <span class="text-[10px] text-gray-300">Not saved yet</span>
+                <button class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl text-xs font-medium cursor-not-allowed">
+                    Save Notes
+                </button>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="mt-auto py-6 text-center text-[10px] text-gray-400">
+        Smart Study Hub - Built for focused learners
     </footer>
 </div>
+
+@code {
+    protected override void OnInitialized()
+    {
+        if (!AuthService.IsAuthenticated)
+        {
+            Navigation.NavigateTo("/login");
+        }
+    }
+
+    private void HandleSignOut()
+    {
+        AuthService.Logout();
+        Navigation.NavigateTo("/login");
+    }
+}
