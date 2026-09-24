@@ -6,7 +6,8 @@
 <div class="min-h-screen flex flex-col bg-[#f8f9fc] font-sans antialiased text-gray-800">
     <!-- Top Navigation Bar -->
     <header class="w-full bg-white border-b border-gray-100 py-3.5 px-8 flex items-center justify-between">
-        <div class="flex items-center gap-2.5">
+        <!-- Clickable Brand Logo & Name -->
+        <a href="/" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                     <rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -16,7 +17,8 @@
                 </svg>
             </div>
             <span class="font-bold text-gray-900 text-sm tracking-tight">Smart Study Hub</span>
-        </div>
+        </a>
+
         <div class="flex items-center gap-2 text-xs text-gray-500">
             <button @onclick="HandleSignOut" class="hover:text-gray-800 flex items-center gap-1">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
@@ -44,21 +46,65 @@
                     <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded-full font-medium">AI</span>
                 </div>
 
-                <div class="border-2 border-dashed border-gray-100 rounded-xl p-6 text-center mb-4 bg-gray-50/30 hover:bg-gray-50/80 transition-colors cursor-pointer">
-                    <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-2 text-blue-600">
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
-                    </div>
-                    <p class="text-xs font-semibold text-gray-700">Drop your file here</p>
-                    <p class="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, TXT — up to 20 MB</p>
+                <!-- Hidden Native Input / Custom Drop Zone -->
+                <div class="relative border-2 border-dashed @(isHovering ? "border-blue-400 bg-blue-50/50" : "border-gray-100 bg-gray-50/30") rounded-xl p-6 text-center mb-4 hover:bg-gray-50/80 transition-colors cursor-pointer">
+                    
+                    <InputFile OnChange="HandleFileSelected" 
+                               accept=".pdf,.docx,.txt"
+                               class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                               @ondragenter="() => isHovering = true"
+                               @onmouseleave="() => isHovering = false" />
+
+                    @if (isProcessing)
+                    {
+                        <!-- Loading State -->
+                        <div class="flex flex-col items-center justify-center py-2">
+                            <div class="w-6 h-6 border-2 border-blue-600 border-t-transparent rounded-full animate-spin mb-2"></div>
+                            <p class="text-xs font-semibold text-gray-700">Summarizing "@uploadedFileName"...</p>
+                            <p class="text-[10px] text-gray-400 mt-0.5">Extracting key concepts using AI</p>
+                        </div>
+                    }
+                    else if (!string.IsNullOrEmpty(uploadedFileName))
+                    {
+                        <!-- File Uploaded State -->
+                        <div class="flex items-center justify-center gap-2 mb-1">
+                            <svg class="w-5 h-5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                            <span class="text-xs font-semibold text-gray-800 truncate max-w-[200px]">@uploadedFileName</span>
+                        </div>
+                        <p class="text-[10px] text-blue-600 font-medium">Click or drop another file to replace</p>
+                    }
+                    else
+                    {
+                        <!-- Initial Default State -->
+                        <div class="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center mx-auto mb-2 text-blue-600">
+                            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" /></svg>
+                        </div>
+                        <p class="text-xs font-semibold text-gray-700">Drop your file here</p>
+                        <p class="text-[10px] text-gray-400 mt-0.5">PDF, DOCX, TXT — up to 20 MB</p>
+                    }
                 </div>
 
-                <div class="bg-gray-50/50 rounded-xl p-3.5 border border-gray-100">
-                    <div class="flex items-center gap-1.5 mb-1.5">
-                        <div class="w-1.5 h-1.5 bg-emerald-500 rounded-full"></div>
-                        <span class="text-[10px] font-bold tracking-wider text-gray-500 uppercase">Summary</span>
+                @if (!string.IsNullOrEmpty(errorMessage))
+                {
+                    <div class="mb-4 p-2.5 bg-red-50 border border-red-200 text-red-600 text-[11px] rounded-lg">
+                        @errorMessage
                     </div>
-                    <p class="text-[11px] leading-relaxed text-gray-500">
-                        This document covers three core principles of spaced repetition: (1) optimal review intervals increase retention by 40-60%, (2) active recall outperforms passive re-reading, and (3) interleaving subjects reduces cognitive fatigue. Key takeaway: study in focused 25-min blocks with deliberate rest.
+                }
+
+                <!-- Summary Box -->
+                <div class="bg-gray-50/50 rounded-xl p-3.5 border border-gray-100">
+                    <div class="flex items-center justify-between mb-1.5">
+                        <div class="flex items-center gap-1.5">
+                            <div class="w-1.5 h-1.5 @(isProcessing ? "bg-amber-400 animate-pulse" : "bg-emerald-500") rounded-full"></div>
+                            <span class="text-[10px] font-bold tracking-wider text-gray-500 uppercase">Summary</span>
+                        </div>
+                        @if (!string.IsNullOrEmpty(uploadedFileName) && !isProcessing)
+                        {
+                            <span class="text-[9px] text-gray-400 font-mono">@(summaryText.Length) chars</span>
+                        }
+                    </div>
+                    <p class="text-[11px] leading-relaxed text-gray-500 min-h-[80px]">
+                        @summaryText
                     </p>
                 </div>
             </div>
@@ -161,12 +207,93 @@
 </div>
 
 @code {
+    private string? uploadedFileName;
+    private string summaryText = "This document covers three core principles of spaced repetition: (1) optimal review intervals increase retention by 40-60%, (2) active recall outperforms passive re-reading, and (3) interleaving subjects reduces cognitive fatigue. Key takeaway: study in focused 25-min blocks with deliberate rest.";
+    private bool isProcessing = false;
+    private bool isHovering = false;
+    private string? errorMessage;
+
+    private const long MaxFileSize = 20 * 1024 * 1024; // 20 MB limit
+
     protected override void OnInitialized()
     {
         if (!AuthService.IsAuthenticated)
         {
             Navigation.NavigateTo("/login");
         }
+    }
+
+    private async Task HandleFileSelected(InputFileChangeEventArgs e)
+    {
+        errorMessage = null;
+        var file = e.File;
+
+        if (file == null) return;
+
+        if (file.Size > MaxFileSize)
+        {
+            errorMessage = "File size exceeds the 20 MB limit. Please choose a smaller document.";
+            return;
+        }
+
+        var allowedExtensions = new[] { ".pdf", ".docx", ".txt" };
+        var extension = System.IO.Path.GetExtension(file.Name).ToLowerInvariant();
+
+        if (!allowedExtensions.Contains(extension))
+        {
+            errorMessage = "Unsupported file format. Please upload a PDF, DOCX, or TXT file.";
+            return;
+        }
+
+        uploadedFileName = file.Name;
+        isProcessing = true;
+        StateHasChanged();
+
+        try
+        {
+            if (extension == ".txt")
+            {
+                using var stream = file.OpenReadStream(MaxFileSize);
+                using var reader = new System.IO.StreamReader(stream);
+                var content = await reader.ReadToEndAsync();
+                
+                await Task.Delay(1000); // Simulate processing time
+                summaryText = GenerateSummaryFromText(content, file.Name);
+            }
+            else
+            {
+                // Simulate AI summarization processing for PDF / DOCX
+                await Task.Delay(1800);
+                summaryText = $"Summary for '{file.Name}': (1) Key concepts extracted automatically across sections, (2) Core conclusions highlighting main theoretical frameworks, and (3) Practical takeaways for quick revision and active testing.";
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = $"Error reading file: {ex.Message}";
+        }
+        finally
+        {
+            isProcessing = false;
+            StateHasChanged();
+        }
+    }
+
+    private string GenerateSummaryFromText(string text, string filename)
+    {
+        if (string.IsNullOrWhiteSpace(text))
+        {
+            return $"The uploaded file '{filename}' appears to be empty.";
+        }
+
+        var lines = text.Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+        var previewText = string.Join(" ", lines.Take(5));
+
+        if (previewText.Length > 220)
+        {
+            previewText = previewText.Substring(0, 220) + "...";
+        }
+
+        return $"Summary for '{filename}': {previewText}";
     }
 
     private void HandleSignOut()
