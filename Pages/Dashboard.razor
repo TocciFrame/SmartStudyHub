@@ -1,7 +1,9 @@
 @page "/dashboard"
 @using SmartStudyHub.Services
+@using System.Text
 @inject AuthService AuthService
 @inject NavigationManager Navigation
+@inject IJSRuntime JS
 
 <style>
     /* CSS 3D Card Flip styles */
@@ -116,7 +118,7 @@
             </div>
         </div>
 
-        <!-- Flashcards Card -->
+        <!-- Dynamic Flashcards Card -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
             <div>
                 <div class="flex items-center justify-between mb-4">
@@ -176,41 +178,58 @@
         <!-- Focus Music Card -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
             <div>
-                <div class="flex items-center gap-2 mb-4">
-                    <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-2" /></svg>
-                    <h2 class="font-bold text-gray-900 text-xs">Focus Music</h2>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-2" /></svg>
+                        <h2 class="font-bold text-gray-900 text-xs">Focus Music</h2>
+                    </div>
+                    @if (isPlaying)
+                    {
+                        <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
+                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Playing
+                        </span>
+                    }
                 </div>
 
-                <div class="relative mb-4">
-                    <select class="w-full bg-gray-50/50 border border-gray-100 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium appearance-none focus:outline-none cursor-pointer">
-                        <option>Soft Rain</option>
-                        <option>Lo-Fi Beats</option>
-                        <option>Forest Ambience</option>
+                <div class="relative mb-3">
+                    <select @bind="selectedTrackName" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium appearance-none focus:outline-none cursor-pointer">
+                        @foreach (var track in ambientTracks)
+                        {
+                            <option value="@track.Name">@track.Name</option>
+                        }
                     </select>
                     <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
                     </div>
                 </div>
 
-                <div class="bg-gray-50/50 rounded-xl py-6 flex items-center justify-center gap-1.5 mb-4 border border-gray-100">
-                    <div class="w-1 bg-gray-200 h-3 rounded-full"></div>
-                    <div class="w-1 bg-gray-200 h-5 rounded-full"></div>
-                    <div class="w-1 bg-gray-300 h-8 rounded-full"></div>
-                    <div class="w-1 bg-gray-200 h-4 rounded-full"></div>
-                    <div class="w-1 bg-gray-200 h-6 rounded-full"></div>
+                <div class="bg-gray-50/50 rounded-xl py-5 flex items-center justify-center gap-1.5 mb-4 border border-gray-100">
+                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-6 animate-pulse" : "bg-gray-200 h-3")"></div>
+                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-600 h-8 animate-bounce" : "bg-gray-200 h-5")"></div>
+                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-10 animate-pulse" : "bg-gray-300 h-8")"></div>
+                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-600 h-5 animate-bounce" : "bg-gray-200 h-4")"></div>
+                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-7 animate-pulse" : "bg-gray-200 h-6")"></div>
                 </div>
             </div>
 
             <div>
-                <button class="w-full py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-sm transition-colors mb-2">
-                    <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
-                    Play
+                <button @onclick="TogglePlayPause" class="w-full py-2.5 @(isPlaying ? "bg-amber-500 hover:bg-amber-600" : "bg-blue-600 hover:bg-blue-700") text-white rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-sm transition-colors mb-2">
+                    @if (isPlaying)
+                    {
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <span>Pause</span>
+                    }
+                    else
+                    {
+                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        <span>Play</span>
+                    }
                 </button>
                 <p class="text-[10px] text-gray-400 text-center">Select a sound and hit play</p>
             </div>
         </div>
 
-        <!-- Quick Scratchpad Card -->
+        <!-- Functional Quick Scratchpad Card -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
             <div>
                 <div class="flex items-center gap-2 mb-4">
@@ -218,12 +237,20 @@
                     <h2 class="font-bold text-gray-900 text-xs">Quick Scratchpad</h2>
                 </div>
 
-                <textarea class="w-full bg-gray-50/50 border border-gray-100 rounded-xl p-3.5 text-xs text-gray-700 placeholder-gray-300 focus:outline-none focus:bg-white resize-none h-32" placeholder="Jot down ideas, formulas, or reminders..."></textarea>
+                <textarea @bind="scratchpadText" 
+                          @bind:event="oninput" 
+                          @onkeyup="OnTextareaInput"
+                          class="w-full bg-gray-50/50 border border-gray-100 rounded-xl p-3.5 text-xs text-gray-700 placeholder-gray-300 focus:outline-none focus:bg-white resize-none h-32" 
+                          placeholder="Jot down ideas, formulas, or reminders..."></textarea>
             </div>
 
             <div class="flex items-center justify-between mt-4">
-                <span class="text-[10px] text-gray-300">Not saved yet</span>
-                <button class="px-4 py-2 bg-gray-100 text-gray-400 rounded-xl text-xs font-medium cursor-not-allowed">
+                <span class="text-[10px] @(isSaved ? "text-emerald-500 font-semibold" : "text-gray-300")">
+                    @(isSaved ? "Saved" : "Not saved yet")
+                </span>
+                <button @onclick="SaveNotes" 
+                        disabled="@(isSaved || string.IsNullOrWhiteSpace(scratchpadText))"
+                        class="px-4 py-2 text-xs font-medium rounded-xl transition-colors @(!isSaved && !string.IsNullOrWhiteSpace(scratchpadText) ? "bg-blue-600 text-white hover:bg-blue-700 shadow-sm cursor-pointer" : "bg-gray-100 text-gray-400 cursor-not-allowed")">
                     Save Notes
                 </button>
             </div>
@@ -237,6 +264,7 @@
 </div>
 
 @code {
+    // Document Summarizer State
     private string? uploadedFileName;
     private string summaryText = "This document covers three core principles of spaced repetition: (1) optimal review intervals increase retention by 40-60%, (2) active recall outperforms passive re-reading, and (3) interleaving subjects reduces cognitive fatigue. Key takeaway: study in focused 25-min blocks with deliberate rest.";
     private bool isProcessing = false;
@@ -244,6 +272,7 @@
     private string? errorMessage;
     private const long MaxFileSize = 20 * 1024 * 1024;
 
+    // Flashcard State & Data
     private bool isFlipped = false;
     private int currentCardIndex = 0;
 
@@ -259,11 +288,75 @@
         ? flashcards[currentCardIndex] 
         : new FlashcardModel { Question = "No flashcards available.", Answer = "Upload a document to generate new flashcards." };
 
+    // Focus Music State
+    private bool isPlaying = false;
+    private string selectedTrackName = "Soft Rain";
+
+    private List<TrackOption> ambientTracks = new()
+    {
+        new TrackOption { Name = "Soft Rain" },
+        new TrackOption { Name = "Lo-Fi Beats" },
+        new TrackOption { Name = "Forest Ambience" }
+    };
+
+    // Quick Scratchpad State
+    private string scratchpadText = string.Empty;
+    private bool isSaved = true;
+
     protected override void OnInitialized()
     {
         if (!AuthService.IsAuthenticated)
         {
             Navigation.NavigateTo("/login");
+        }
+    }
+
+    private void TogglePlayPause()
+    {
+        isPlaying = !isPlaying;
+    }
+
+    private void OnTextareaInput()
+    {
+        isSaved = false;
+    }
+
+    private async Task SaveNotes()
+    {
+        if (!string.IsNullOrWhiteSpace(scratchpadText))
+        {
+            try
+            {
+                errorMessage = null;
+                isSaved = true;
+                
+                // Safe self-contained JS blob download script
+                var jsCode = $@"
+                    (function() {{
+                        try {{
+                            const text = {System.Text.Json.JsonSerializer.Serialize(scratchpadText)};
+                            const blob = new Blob([text], {{ type: 'text/plain;charset=utf-8' }});
+                            const url = URL.createObjectURL(blob);
+                            const a = document.createElement('a');
+                            a.href = url;
+                            a.download = 'scratchpad_notes.txt';
+                            document.body.appendChild(a);
+                            a.click();
+                            document.body.removeChild(a);
+                            URL.revokeObjectURL(url);
+                        }} catch(e) {{
+                            console.error('Download failed', e);
+                        }}
+                    }})();
+                ";
+
+                await JS.InvokeVoidAsync("eval", jsCode);
+            }
+            catch (Exception ex)
+            {
+                isSaved = false;
+                errorMessage = $"Error saving scratchpad notes: {ex.Message}";
+            }
         }
     }
 
@@ -331,7 +424,6 @@
             }
             else
             {
-                // Clean AI processing for binary PDF / DOCX files
                 await Task.Delay(1200);
                 string topicName = System.IO.Path.GetFileNameWithoutExtension(file.Name).Replace("_", " ");
                 
@@ -400,5 +492,10 @@
     {
         public string Question { get; set; } = string.Empty;
         public string Answer { get; set; } = string.Empty;
+    }
+
+    public class TrackOption
+    {
+        public string Name { get; set; } = string.Empty;
     }
 }
