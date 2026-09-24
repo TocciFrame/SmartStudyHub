@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "YLx5vybfnIiRkNarBJ1/GzOBKJnXASoO/vTZkP7ojZk=",
+  "Hash": "yba7qff8SstVRL8+a+VFv3W9nMiWgX1C1rQuz/JUQLY=",
   "Source": "SmartStudyHub",
   "BasePath": "/",
   "Mode": "Root",
@@ -7826,12 +7826,12 @@
       "OriginalItemSpec": "wwwroot\\css\\app.css"
     },
     {
-      "Identity": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
+      "Identity": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\tailwind.css",
       "SourceId": "SmartStudyHub",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\",
       "BasePath": "/",
-      "RelativePath": "css/bootstrap/bootstrap.min.css",
+      "RelativePath": "css/tailwind.css",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -7842,26 +7842,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css"
-    },
-    {
-      "Identity": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
-      "SourceId": "SmartStudyHub",
-      "SourceType": "Discovered",
-      "ContentRoot": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\",
-      "BasePath": "/",
-      "RelativePath": "css/bootstrap/bootstrap.min.css.map",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "AssetMergeBehavior": "PreferTarget",
-      "AssetMergeSource": "",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\css\\bootstrap\\bootstrap.min.css.map"
+      "OriginalItemSpec": "wwwroot\\css\\tailwind.css"
     },
     {
       "Identity": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\favicon.png",

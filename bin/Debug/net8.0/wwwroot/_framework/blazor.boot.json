@@ -1,7 +1,7 @@
 {
   "mainAssemblyName": "SmartStudyHub",
   "resources": {
-    "hash": "sha256-Gow/2wqP1uZZVxksl82qeK90CfKxHNpTKTLf2n8GuDI=",
+    "hash": "sha256-Utf/hRT6qmXdofRZFIHMnqQkK0H1EYFQ15keDGmr6LU=",
     "jsModuleNative": {
       "dotnet.native.8.0.8.93i67mqfmb.js": "sha256-juC5sA7gHTLXFEhAKgdM2/RavswpwCtDfjYGsAz2FXg="
     },
@@ -208,10 +208,10 @@
       "mscorlib.wasm": "sha256-Gz8PyW2/fwihe5ul81OwmRUrU71r+KtbyRw6xlOGD+Q=",
       "netstandard.wasm": "sha256-jMTqIQzoDS810lyhZpMO5eEC36EzntXqSVn+2qwkOMQ=",
       "System.Private.CoreLib.wasm": "sha256-NFj5WE5VLP2LptZIRJCUIc1AMk06FmxpsSILfPISwAw=",
-      "SmartStudyHub.wasm": "sha256-6mitpUGGeo5r1qMiuN8RQ+SwQEBcPXo8ReqeYcS3fmE="
+      "SmartStudyHub.wasm": "sha256-3dPC1S4Bd4F4DFS6gMTuyYFPFnWWwY2HSyrSMcZk84g="
     },
     "pdb": {
-      "SmartStudyHub.pdb": "sha256-sIwgvRNRkRR457PAsflkpMI5HMpRjRV/UHSiaN60rYw="
+      "SmartStudyHub.pdb": "sha256-vPIX8VI7bOIsPlsFiCa+KKGUTEmOcq2NjpdLk2HwRxE="
     }
   },
   "cacheBootResources": true,

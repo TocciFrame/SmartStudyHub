@@ -1,3 +1,13 @@
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.csproj.AssemblyReference.cache
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.AssemblyInfoInputs.cache
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.AssemblyInfo.cs
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.csproj.CoreCompileInputs.cache
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.sourcelink.json
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.dll
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\refint\SmartStudyHub.dll
+C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.pdb
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\blazor.boot.json
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\blazor.webassembly.js
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\dotnet.js
@@ -406,6 +416,8 @@ C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\System.Coll
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\System.Net.WebProxy.wasm.gz
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\System.Net.Quic.wasm.gz
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\wwwroot\_framework\System.Diagnostics.Tools.wasm.gz
+C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\package-lock.json
+C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\package.json
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\SmartStudyHub.staticwebassets.runtime.json
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\SmartStudyHub.dll
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\SmartStudyHub.pdb
@@ -609,12 +621,6 @@ C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\dotnet.runtime.js.map
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\icudt_CJK.dat
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\icudt_EFIGS.dat
 C:\Users\L23Y16W21\SmartStudyHub\bin\Debug\net8.0\icudt_no_CJK.dat
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.csproj.AssemblyReference.cache
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.GeneratedMSBuildEditorConfig.editorconfig
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.AssemblyInfoInputs.cache
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.AssemblyInfo.cs
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.csproj.CoreCompileInputs.cache
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.MvcApplicationPartsAssemblyInfo.cache
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Authorization.wasm
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.wasm
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\webcil\Microsoft.AspNetCore.Components.Forms.wasm
@@ -1025,7 +1031,4 @@ C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\compressed\9113ydw8lf.gz
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\compressed\mtqte1b7bh.gz
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\compressed\fveyapdap7.gz
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStu.24071F17.Up2Date
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.dll
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\refint\SmartStudyHub.dll
-C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\SmartStudyHub.pdb
 C:\Users\L23Y16W21\SmartStudyHub\obj\Debug\net8.0\ref\SmartStudyHub.dll

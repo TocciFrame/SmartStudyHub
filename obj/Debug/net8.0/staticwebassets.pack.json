@@ -17,12 +17,8 @@
       "PackagePath": "staticwebassets\\css\\app.css"
     },
     {
-      "Id": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\bootstrap\\bootstrap.min.css",
-      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css"
-    },
-    {
-      "Id": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\bootstrap\\bootstrap.min.css.map",
-      "PackagePath": "staticwebassets\\css\\bootstrap\\bootstrap.min.css.map"
+      "Id": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\css\\tailwind.css",
+      "PackagePath": "staticwebassets\\css\\tailwind.css"
     },
     {
       "Id": "C:\\Users\\L23Y16W21\\SmartStudyHub\\wwwroot\\favicon.png",

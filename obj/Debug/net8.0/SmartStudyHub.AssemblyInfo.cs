@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartStudyHub")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+229c536afc0c5644c4030a47e27eb40e5e4c8b4c")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartStudyHub")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartStudyHub")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
