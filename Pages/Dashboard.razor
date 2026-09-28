@@ -25,7 +25,7 @@
     <!-- Top Navigation Bar -->
     <header class="w-full bg-white border-b border-gray-100 py-3.5 px-8 flex items-center justify-between">
         <!-- Clickable Brand Logo & Name -->
-        <a href="/" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
+        <a href="/dashboard" class="flex items-center gap-2.5 hover:opacity-80 transition-opacity">
             <div class="w-7 h-7 bg-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
                 <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24">
                     <rect x="3" y="3" width="7" height="7" rx="1.5" />
@@ -37,8 +37,16 @@
             <span class="font-bold text-gray-900 text-sm tracking-tight">Smart Study Hub</span>
         </a>
 
-        <div class="flex items-center gap-2 text-xs text-gray-500">
-            <button @onclick="HandleSignOut" class="hover:text-gray-800 flex items-center gap-1">
+        <!-- Right Navigation Action Links -->
+        <div class="flex items-center gap-6 text-xs text-gray-500">
+            <a href="/feedback" class="text-blue-600 hover:text-blue-700 flex items-center gap-1.5 font-medium transition-colors">
+                <svg style="width: 16px; height: 16px; fill: #2563eb; color: #2563eb;" viewBox="0 0 24 24">
+                    <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z" />
+                </svg>
+                <span>Feedback</span>
+            </a>
+
+            <button @onclick="HandleSignOut" class="hover:text-gray-800 flex items-center gap-1 transition-colors">
                 <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>
                 Sign out
             </button>
@@ -176,60 +184,62 @@
         </div>
 
         <!-- Focus Music Card -->
-        <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+        <div style="background-color: #ffffff; border-radius: 16px; border: 1px solid #f3f4f6; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.02); display: flex; flex-direction: column; justify-content: space-between;">
             <div>
-                <div class="flex items-center justify-between mb-4">
-                    <div class="flex items-center gap-2">
-                        <svg class="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-2" /></svg>
-                        <h2 class="font-bold text-gray-900 text-xs">Focus Music</h2>
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <svg style="width: 16px; height: 16px; color: #2563eb;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19V6l12-2v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-2c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-2" /></svg>
+                        <h2 style="font-weight: 700; color: #111827; font-size: 12px; margin: 0;">Focus Music</h2>
                     </div>
                     @if (isPlaying)
                     {
-                        <span class="text-[10px] bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-full font-medium flex items-center gap-1">
-                            <span class="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span> Playing
+                        <span style="font-size: 10px; background-color: #ecfdf5; color: #059669; padding: 2px 8px; border-radius: 9999px; font-weight: 500; display: flex; align-items: center; gap: 4px;">
+                            <span style="width: 6px; height: 6px; background-color: #10b981; border-radius: 9999px;"></span> Playing
                         </span>
                     }
                 </div>
 
-                <div class="relative mb-3">
-                    <select @bind="selectedTrackName" class="w-full bg-gray-50/50 border border-gray-100 rounded-xl px-3.5 py-2.5 text-xs text-gray-700 font-medium appearance-none focus:outline-none cursor-pointer">
+                <!-- Hidden HTML5 Audio Element -->
+                <audio id="focusAudioPlayer" src="@CurrentTrackUrl" loop preload="auto"></audio>
+
+                <!-- Track Selector -->
+                <div style="position: relative; margin-bottom: 12px;">
+                    <select @onchange="OnTrackChanged" style="width: 100%; background-color: #fafafa; border: 1px solid #f3f4f6; border-radius: 12px; padding: 10px 14px; font-size: 12px; color: #374151; font-weight: 500; outline: none; cursor: pointer; box-sizing: border-box;">
                         @foreach (var track in ambientTracks)
                         {
                             <option value="@track.Name">@track.Name</option>
                         }
                     </select>
-                    <div class="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-gray-400">
-                        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
-                    </div>
                 </div>
 
-                <div class="bg-gray-50/50 rounded-xl py-5 flex items-center justify-center gap-1.5 mb-4 border border-gray-100">
-                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-6 animate-pulse" : "bg-gray-200 h-3")"></div>
-                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-600 h-8 animate-bounce" : "bg-gray-200 h-5")"></div>
-                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-10 animate-pulse" : "bg-gray-300 h-8")"></div>
-                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-600 h-5 animate-bounce" : "bg-gray-200 h-4")"></div>
-                    <div class="w-1 rounded-full transition-all duration-300 @(isPlaying ? "bg-blue-500 h-7 animate-pulse" : "bg-gray-200 h-6")"></div>
+                <!-- Equalizer Display -->
+                <div style="background-color: #fafafa; border-radius: 12px; padding: 20px 0; display: flex; align-items: center; justify-content: center; gap: 6px; margin-bottom: 16px; border: 1px solid #f3f4f6;">
+                    <div style="width: 4px; border-radius: 9999px; transition: all 0.3s; background-color: @(isPlaying ? "#3b82f6" : "#e5e7eb"); height: @(isPlaying ? "24px" : "12px");"></div>
+                    <div style="width: 4px; border-radius: 9999px; transition: all 0.3s; background-color: @(isPlaying ? "#2563eb" : "#e5e7eb"); height: @(isPlaying ? "32px" : "20px");"></div>
+                    <div style="width: 4px; border-radius: 9999px; transition: all 0.3s; background-color: @(isPlaying ? "#3b82f6" : "#d1d5db"); height: @(isPlaying ? "40px" : "32px");"></div>
+                    <div style="width: 4px; border-radius: 9999px; transition: all 0.3s; background-color: @(isPlaying ? "#2563eb" : "#e5e7eb"); height: @(isPlaying ? "20px" : "16px");"></div>
+                    <div style="width: 4px; border-radius: 9999px; transition: all 0.3s; background-color: @(isPlaying ? "#3b82f6" : "#e5e7eb"); height: @(isPlaying ? "28px" : "24px");"></div>
                 </div>
             </div>
 
             <div>
-                <button @onclick="TogglePlayPause" class="w-full py-2.5 @(isPlaying ? "bg-amber-500 hover:bg-amber-600" : "bg-blue-600 hover:bg-blue-700") text-white rounded-xl text-xs font-medium flex items-center justify-center gap-2 shadow-sm transition-colors mb-2">
+                <button @onclick="TogglePlayPause" style="width: 100%; padding: 10px 0; background-color: @(isPlaying ? "#f59e0b" : "#2563eb"); color: #ffffff; border: none; border-radius: 12px; font-size: 12px; font-weight: 500; display: flex; align-items: center; justify-content: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05); cursor: pointer; transition: background-color 0.2s; margin-bottom: 8px;">
                     @if (isPlaying)
                     {
-                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                         <span>Pause</span>
                     }
                     else
                     {
-                        <svg class="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
+                        <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24"><path d="M8 5v14l11-7z" /></svg>
                         <span>Play</span>
                     }
                 </button>
-                <p class="text-[10px] text-gray-400 text-center">Select a sound and hit play</p>
+                <p style="font-size: 10px; color: #9ca3af; text-align: center; margin: 0;">Select a sound and hit play</p>
             </div>
         </div>
 
-        <!-- Functional Quick Scratchpad Card -->
+        <!-- Quick Scratchpad Card -->
         <div class="bg-white rounded-2xl border border-gray-100 p-6 shadow-[0_2px_10px_rgba(0,0,0,0.02)] flex flex-col justify-between">
             <div>
                 <div class="flex items-center gap-2 mb-4">
@@ -292,12 +302,15 @@
     private bool isPlaying = false;
     private string selectedTrackName = "Soft Rain";
 
+    // Reliable public domain MP3 audio streams
     private List<TrackOption> ambientTracks = new()
     {
-        new TrackOption { Name = "Soft Rain" },
-        new TrackOption { Name = "Lo-Fi Beats" },
-        new TrackOption { Name = "Forest Ambience" }
+        new TrackOption { Name = "Soft Rain", Url = "https://upload.wikimedia.org/wikipedia/commons/2/22/Rain_drops_on_a_window_glass.mp3" },
+        new TrackOption { Name = "Lo-Fi Beats", Url = "https://upload.wikimedia.org/wikipedia/commons/5/5b/Smooth_Jazz_Guitar_Loop.mp3" },
+        new TrackOption { Name = "Forest Ambience", Url = "https://upload.wikimedia.org/wikipedia/commons/a/a2/Forest_birds_ambience.mp3" }
     };
+
+    private string CurrentTrackUrl => ambientTracks.FirstOrDefault(t => t.Name == selectedTrackName)?.Url ?? ambientTracks[0].Url;
 
     // Quick Scratchpad State
     private string scratchpadText = string.Empty;
@@ -311,9 +324,65 @@
         }
     }
 
-    private void TogglePlayPause()
+    private async Task TogglePlayPause()
     {
         isPlaying = !isPlaying;
+        if (isPlaying)
+        {
+            try
+            {
+                errorMessage = null;
+                await JS.InvokeVoidAsync("eval", @"
+                    (async function() {
+                        const audio = document.getElementById('focusAudioPlayer');
+                        if (audio) {
+                            try {
+                                audio.load();
+                                await audio.play();
+                            } catch (err) {
+                                console.warn('Playback error:', err);
+                            }
+                        }
+                    })();
+                ");
+            }
+            catch (Exception ex)
+            {
+                isPlaying = false;
+                errorMessage = $"Audio error: {ex.Message}";
+            }
+        }
+        else
+        {
+            await JS.InvokeVoidAsync("eval", @"
+                const audio = document.getElementById('focusAudioPlayer');
+                if (audio) audio.pause();
+            ");
+        }
+    }
+
+    private async Task OnTrackChanged(ChangeEventArgs e)
+    {
+        selectedTrackName = e.Value?.ToString() ?? "Soft Rain";
+        
+        if (isPlaying)
+        {
+            StateHasChanged();
+            await Task.Delay(100);
+            await JS.InvokeVoidAsync("eval", @"
+                (async function() {
+                    const audio = document.getElementById('focusAudioPlayer');
+                    if (audio) {
+                        try {
+                            audio.load();
+                            await audio.play();
+                        } catch (err) {
+                            console.warn('Track switch error:', err);
+                        }
+                    }
+                })();
+            ");
+        }
     }
 
     private void OnTextareaInput()
@@ -330,7 +399,6 @@
                 errorMessage = null;
                 isSaved = true;
                 
-                // Safe self-contained JS blob download script
                 var jsCode = $@"
                     (function() {{
                         try {{
@@ -497,5 +565,6 @@
     public class TrackOption
     {
         public string Name { get; set; } = string.Empty;
+        public string Url { get; set; } = string.Empty;
     }
 }
