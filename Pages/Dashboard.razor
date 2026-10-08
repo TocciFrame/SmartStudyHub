@@ -1,5 +1,6 @@
 @page "/dashboard"
 @using SmartStudyHub.Services
+@using SmartStudyHub.Models
 @using System.Text
 @inject AuthService AuthService
 @inject NavigationManager Navigation
@@ -554,17 +555,5 @@
     {
         AuthService.Logout();
         Navigation.NavigateTo("/login");
-    }
-
-    public class FlashcardModel
-    {
-        public string Question { get; set; } = string.Empty;
-        public string Answer { get; set; } = string.Empty;
-    }
-
-    public class TrackOption
-    {
-        public string Name { get; set; } = string.Empty;
-        public string Url { get; set; } = string.Empty;
     }
 }
